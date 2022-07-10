@@ -1,17 +1,16 @@
 package com.MAndina.challengeBack.Service;
 
 import com.MAndina.challengeBack.Model.JPA.Producto;
-import com.MAndina.challengeBack.Repository.ProdRepo;
+import com.MAndina.challengeBack.Repository.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProdService {
     @Autowired
-    ProdRepo pR;
+    ProductoRepo pR;
 
     public List<Producto> getAll(){
         return  pR.findAll();

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Detalle {
+public class Detalle{
     private String producto;
     private int cantidad;
 }

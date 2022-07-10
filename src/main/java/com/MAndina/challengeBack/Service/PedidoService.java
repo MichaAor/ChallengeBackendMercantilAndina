@@ -1,32 +1,25 @@
 package com.MAndina.challengeBack.Service;
 
-import com.MAndina.challengeBack.Model.Response.DetalleGral;
-import com.MAndina.challengeBack.Model.JPA.PedidoCabecera;
-
-import com.MAndina.challengeBack.Model.JPA.PedidoDetalle;
-import com.MAndina.challengeBack.Model.JPA.Producto;
-import com.MAndina.challengeBack.Model.Response.PedidoGral;
-import com.MAndina.challengeBack.Model.Request.Detalle;
-import com.MAndina.challengeBack.Model.Request.PedidoRQ;
-import com.MAndina.challengeBack.Repository.PDetalleRepo;
-import com.MAndina.challengeBack.Repository.PCabeceraRepo;
+import com.MAndina.challengeBack.Model.Response.*;
+import com.MAndina.challengeBack.Model.JPA.*;
+import com.MAndina.challengeBack.Model.Request.*;
+import com.MAndina.challengeBack.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PedidoService {
     @Autowired
-    PCabeceraRepo pCR;
+    PedidoCRepo pCR;
 
     @Autowired
     ProdService pS;
 
     @Autowired
-    PDetalleRepo pDR;
+    PedidoDRepo pDR;
 
 /**MAPEOS**/
 
@@ -86,7 +79,7 @@ public class PedidoService {
         for(PedidoDetalle deta: detalles){
             Producto producto = pS.getById(deta.getProducto().getId());
             DetalleGral detaG = new DetalleGral(producto.getId(),producto.getNombre(),deta.getCantidad(),(deta.getCantidad() * producto.getPrecioUnitario()));
-            pdg.getDetalles().add(detaG);
+            pdg.getDetalle().add(detaG);
             total += (deta.getCantidad() * producto.getPrecioUnitario());
             cant += deta.getCantidad();
         }

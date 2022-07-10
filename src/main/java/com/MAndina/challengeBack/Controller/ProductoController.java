@@ -7,26 +7,24 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/productos")
-public class ProdController {
+public class ProductoController {
     @Autowired
     ProdService pS;
 
     @GetMapping
-    public ResponseEntity<List<Producto>> getAll(){
+    public ResponseEntity<List<Producto>> getAllProductos(){
         return ResponseEntity.ok(pS.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> readOne(@PathVariable(value = "id") String id){
+    public ResponseEntity<?> getProductoById(@PathVariable(value = "id") String id){
         Producto pr;
         try{
             pr = pS.getById(id);
@@ -36,9 +34,8 @@ public class ProdController {
         }
     }
 
-
     @PostMapping
-    public ResponseEntity<Integer> create(@RequestBody Producto producto){
+    public ResponseEntity<Integer> createProducto(@RequestBody Producto producto){
         try {
             pS.save(producto);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -47,27 +44,25 @@ public class ProdController {
         }
     }
 
-
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable(value = "id") String id,@RequestBody Producto producto){
+    public ResponseEntity updateProducto(@PathVariable(value = "id") String id, @RequestBody Producto producto){
             producto.setId(id);
             if(producto.getId() == null){
                 return ResponseEntity.badRequest().build();
             }
             if(pS.update(producto)){
-                return new ResponseEntity<>(HttpStatus.OK);
+                return ResponseEntity.ok().build();
             }else{
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return ResponseEntity.notFound().build();
             }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable(value = "id") String id){
+    public ResponseEntity deleteProducto(@PathVariable(value = "id") String id){
         if(pS.delete(id)){
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok().build();
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ResponseEntity.notFound().build();
     }
-
 
 }

@@ -17,11 +17,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProductoTestIntegracion {
+public class TestIntProducto {
 
     @Autowired
     private TestRestTemplate client;
-
 
     private ObjectMapper mapper;
 
@@ -32,7 +31,7 @@ public class ProductoTestIntegracion {
 
     @Test
     @Order(1)
-    void getAllP() {
+    void testRecuperarTodos(){
         ResponseEntity<String> response = client.getForEntity("/productos", String.class);
         String json = response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -43,7 +42,7 @@ public class ProductoTestIntegracion {
 
     @Test
     @Order(2)
-    void getByIdP() {
+    void testRecuperarPorId() {
         ResponseEntity<Producto> response = client.getForEntity("/productos/89efb206-2aa6-4e21-8a23-5765e3de1f31", Producto.class);
         Producto json = response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -54,8 +53,8 @@ public class ProductoTestIntegracion {
 
     @Test
     @Order(3)
-    void testCreateP(){
-        Producto pr = createP();
+    void testCrearProducto(){
+        Producto pr = generarProducto();
         ResponseEntity<Integer> response = client
                 .postForEntity("/productos",pr,Integer.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -63,7 +62,7 @@ public class ProductoTestIntegracion {
 
     @Test
     @Order(4)
-    void testUpdate(){
+    void testActualizarProducto(){
         ResponseEntity<Producto> response = client.getForEntity("/productos/22efb987-4aa1-6e79-2a88-4444e5de3f98", Producto.class);
         Producto json = response.getBody();
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -71,7 +70,7 @@ public class ProductoTestIntegracion {
         assertNotNull(json);
         System.err.println(json);
 
-        Producto pr = modifyP();
+        Producto pr = generarProductoModificado();
         client.put("/productos/22efb987-4aa1-6e79-2a88-4444e5de3f98",pr);
 
         response = client.getForEntity("/productos/22efb987-4aa1-6e79-2a88-4444e5de3f98", Producto.class);
@@ -85,10 +84,11 @@ public class ProductoTestIntegracion {
 
     @Test
     @Order(5)
-    void testDeleteP(){
+    void testBorrarProducto(){
         ResponseEntity<Producto[]> respuesta = client.getForEntity("/productos",Producto[].class);
         List<Producto> prs = Arrays.asList(respuesta.getBody());
         assertEquals(3,prs.size());
+
         client.delete("/productos/22efb987-4aa1-6e79-2a88-4444e5de3f98");
 
         respuesta = client.getForEntity("/productos",Producto[].class);
@@ -104,7 +104,7 @@ public class ProductoTestIntegracion {
 
 /**DEMOS*/
 
-    private Producto createP(){
+    private Producto generarProducto(){
         Producto pr = new Producto("22efb987-4aa1-6e79-2a88-4444e5de3f98"
                 ,"Fugazza"
                 ,"Pizza de cebolla y aceitunas negras"
@@ -113,7 +113,7 @@ public class ProductoTestIntegracion {
         return pr;
     }
 
-    private Producto modifyP(){
+    private Producto generarProductoModificado(){
         Producto pr = new Producto("22efb987-4aa1-6e79-2a88-4444e5de3f98"
                 ,"Fugazza"
                 ,"Pizza de cebolla y aceitunas negras"
@@ -121,10 +121,6 @@ public class ProductoTestIntegracion {
                 ,900.00f);
         return pr;
     }
-
-
-
-
 
 }
 

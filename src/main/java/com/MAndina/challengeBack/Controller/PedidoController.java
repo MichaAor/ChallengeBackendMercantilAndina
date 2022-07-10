@@ -1,6 +1,5 @@
 package com.MAndina.challengeBack.Controller;
 
-import com.MAndina.challengeBack.Model.JPA.PedidoCabecera;
 import com.MAndina.challengeBack.Model.Request.PedidoRQ;
 import com.MAndina.challengeBack.Model.Response.PedidoGral;
 import com.MAndina.challengeBack.Service.PedidoService;
@@ -9,8 +8,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,14 +19,14 @@ public class PedidoController {
     PedidoService pS;
 
     @GetMapping
-    public ResponseEntity<List<PedidoGral>> getByFecha(@RequestParam String fecha){
+    public ResponseEntity<List<PedidoGral>> getPedidosByFecha(@RequestParam String fecha){
         LocalDate fechaB = LocalDate.parse(fecha);
         return ResponseEntity.ok(pS.getAllPDGRAL(fechaB));
     }
 
 
     @PostMapping
-    public ResponseEntity<PedidoGral> create(@RequestBody PedidoRQ pRQ){
+    public ResponseEntity<PedidoGral> createPedido(@RequestBody PedidoRQ pRQ){
         try {
             PedidoGral rta = pS.savePedido(pRQ);
             return new ResponseEntity<>(rta,HttpStatus.CREATED);
@@ -37,6 +34,5 @@ public class PedidoController {
             return ResponseEntity.internalServerError().build();
         }
     }
-
 
 }

@@ -9,6 +9,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Repository
-public interface PCabeceraRepo extends JpaRepository<PedidoCabecera,Long> {
+public interface PedidoCRepo extends JpaRepository<PedidoCabecera,Long> {
     ArrayList<PedidoCabecera> getByFecha(LocalDate fecha);
 }

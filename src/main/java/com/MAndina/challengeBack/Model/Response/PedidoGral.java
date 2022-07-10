@@ -17,7 +17,7 @@ public class PedidoGral {
     private String email;
     private String telefono;
     private LocalTime horario;
-    private ArrayList<DetalleGral> detalles = new ArrayList<>();
+    private ArrayList<DetalleGral> detalle = new ArrayList<>();
     private float total;
     private boolean descuento;
     private String estado;
