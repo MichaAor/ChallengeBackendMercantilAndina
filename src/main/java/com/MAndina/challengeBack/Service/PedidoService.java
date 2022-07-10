@@ -41,7 +41,7 @@ public class PedidoService {
     }
 
     private PedidoDetalle mappearPDetalle(Long pc, String idP, int cant){
-        Producto producto = pS.getById(idP).get();
+        Producto producto = pS.getById(idP);
         PedidoDetalle detalle = new PedidoDetalle(pc,producto,cant,(producto.getPrecioUnitario() * cant));
         return detalle;
     }
@@ -84,7 +84,7 @@ public class PedidoService {
         pdg.setHorario(pc.getHorario());
         ArrayList<PedidoDetalle> detalles = pDR.getDetalleById(pc.getId());
         for(PedidoDetalle deta: detalles){
-            Producto producto = pS.getById(deta.getProducto().getId()).get();
+            Producto producto = pS.getById(deta.getProducto().getId());
             DetalleGral detaG = new DetalleGral(producto.getId(),producto.getNombre(),deta.getCantidad(),(deta.getCantidad() * producto.getPrecioUnitario()));
             pdg.getDetalles().add(detaG);
             total += (deta.getCantidad() * producto.getPrecioUnitario());

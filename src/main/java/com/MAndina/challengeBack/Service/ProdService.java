@@ -17,13 +17,12 @@ public class ProdService {
         return  pR.findAll();
     }
 
-    public Optional<Producto> getById(String id){
-        Optional<Producto> pr = pR.findById(id);
-        return pr;
+    public Producto getById(String id){
+        return pR.findById(id).orElseThrow();
     }
 
-    public void save(Producto producto){
-        pR.save(producto);
+    public Producto save(Producto producto){
+        return pR.save(producto);
     }
 
     public boolean exist(String id){
