@@ -16,7 +16,7 @@ public class PedidoService {
     PedidoCRepo pCR;
 
     @Autowired
-    ProdService pS;
+    ProductoService pS;
 
     @Autowired
     PedidoDRepo pDR;
@@ -41,14 +41,14 @@ public class PedidoService {
 
 
 /**SAVES*/
-    public PedidoCabecera savePedCabecera(PedidoRQ pRQ){
+    public PedidoCabecera savePCabecera(PedidoRQ pRQ){
         PedidoCabecera pc = mappearPCabecera(pRQ);
         long idPc = pCR.save(pc).getId();
         pc.setId(idPc);
         return pc;
     }
 
-    public void savePedDetalle(Long pc,PedidoRQ pRQ){
+    public void savePDetalle(Long pc, PedidoRQ pRQ){
         for(Detalle dRQ : pRQ.getDetalle()){
             PedidoDetalle pd = mappearPDetalle(pc, dRQ.getProducto(), dRQ.getCantidad());
              pDR.save(pd);
@@ -56,8 +56,8 @@ public class PedidoService {
     }
 
     public PedidoGral savePedido(PedidoRQ pRQ){
-        PedidoCabecera pc = savePedCabecera(pRQ);
-        savePedDetalle(pc.getId(),pRQ);
+        PedidoCabecera pc = savePCabecera(pRQ);
+        savePDetalle(pc.getId(),pRQ);
         PedidoGral pgr = getPedido(pc);
         return pgr;
     }
@@ -76,17 +76,24 @@ public class PedidoService {
         pdg.setTelefono(pc.getTelefono());
         pdg.setHorario(pc.getHorario());
         ArrayList<PedidoDetalle> detalles = pDR.getDetalleById(pc.getId());
-        for(PedidoDetalle deta: detalles){
-            Producto producto = pS.getById(deta.getProducto().getId());
-            DetalleGral detaG = new DetalleGral(producto.getId(),producto.getNombre(),deta.getCantidad(),(deta.getCantidad() * producto.getPrecioUnitario()));
+
+        for(PedidoDetalle pDetalles: detalles){
+            Producto producto = pS.getById(pDetalles.getProducto().getId());
+            DetalleGral detaG = new DetalleGral(producto.getId(),
+                    producto.getNombre(),
+                    pDetalles.getCantidad(),
+                    (pDetalles.getCantidad() * producto.getPrecioUnitario()));
             pdg.getDetalle().add(detaG);
-            total += (deta.getCantidad() * producto.getPrecioUnitario());
-            cant += deta.getCantidad();
+
+            total += (pDetalles.getCantidad() * producto.getPrecioUnitario());
+            cant += pDetalles.getCantidad();
         }
+
         if(cant > 3){
             total = total * 0.7f;
             desc = true;
         }
+
         pc.setTotal(total);
         pc.setDescuento(desc);
         pc.setEstado("PENDIENTE");

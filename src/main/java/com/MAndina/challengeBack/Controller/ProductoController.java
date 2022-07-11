@@ -1,7 +1,7 @@
 package com.MAndina.challengeBack.Controller;
 
 import com.MAndina.challengeBack.Model.JPA.Producto;
-import com.MAndina.challengeBack.Service.ProdService;
+import com.MAndina.challengeBack.Service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 @RequestMapping("/productos")
 public class ProductoController {
     @Autowired
-    ProdService pS;
+    ProductoService pS;
 
     @GetMapping
     public ResponseEntity<List<Producto>> getAllProductos(){
